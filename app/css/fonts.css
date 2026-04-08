@@ -1,0 +1,43 @@
+/* Sharp Grotesk — Progresol Brand Typeface */
+
+@font-face {
+  font-family: 'SG-SemiBold-10';
+  src: url('../fonts/SharpGrotesk-SemiBold10.otf') format('opentype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'SG-SemiBold-15';
+  src: url('../fonts/SharpGrotesk-SemiBold15.otf') format('opentype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'SG-Medium-10';
+  src: url('../fonts/SharpGrotesk-Medium10.otf') format('opentype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'SG-MediumItalic-10';
+  src: url('../fonts/SharpGrotesk-MediumItalic10.otf') format('opentype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'SG-Book-15';
+  src: url('../fonts/SharpGrotesk-Book15.otf') format('opentype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'SG-BookItalic-15';
+  src: url('../fonts/SharpGrotesk-BookItalic15.otf') format('opentype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'SG-Book-25';
+  src: url('../fonts/SharpGrotesk-Book25.otf') format('opentype');
+  font-display: block;
+}

@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* --- Sharp Grotesk Font Faces --- */
+@font-face { font-family: 'SG-SemiBold-10'; src: url('./assets/fonts/SharpGrotesk-SemiBold10.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'SG-SemiBold-15'; src: url('./assets/fonts/SharpGrotesk-SemiBold15.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'SG-Medium-10'; src: url('./assets/fonts/SharpGrotesk-Medium10.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'SG-MediumItalic-10'; src: url('./assets/fonts/SharpGrotesk-MediumItalic10.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'SG-Book-15'; src: url('./assets/fonts/SharpGrotesk-Book15.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'SG-BookItalic-15'; src: url('./assets/fonts/SharpGrotesk-BookItalic15.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'SG-Book-25'; src: url('./assets/fonts/SharpGrotesk-Book25.otf') format('opentype'); font-display: block; }
+
+/* --- Register fonts in Tailwind v4 theme --- */
+@theme {
+  --font-sg-sb10: 'SG-SemiBold-10', sans-serif;
+  --font-sg-sb15: 'SG-SemiBold-15', sans-serif;
+  --font-sg-m10: 'SG-Medium-10', sans-serif;
+  --font-sg-mi10: 'SG-MediumItalic-10', sans-serif;
+  --font-sg-b15: 'SG-Book-15', sans-serif;
+  --font-sg-bi15: 'SG-BookItalic-15', sans-serif;
+  --font-sg-b25: 'SG-Book-25', sans-serif;
+}
+
+/* --- Kiosk Protection --- */
+
+html, body {
+  overflow: hidden;
+  background: #0032A0;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Kiosk mode (full size) */
+@media (min-width: 1080px) {
+  html, body, #root {
+    width: 1080px;
+    height: 1920px;
+  }
+}
+
+/* Mobile preview mode */
+@media (max-width: 1079px) {
+  html, body {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+#root {
+  position: relative;
+}
+
+/* --- Animations --- */
+@keyframes pulse-cta {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
