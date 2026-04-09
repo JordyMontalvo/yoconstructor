@@ -1,9 +1,10 @@
+import { useEffect } from 'react'
 import logoVertical from '../assets/logo-vertical.svg'
 
 const TIERS = [
-  { min: 0, max: 3, label: 'APRENDIZ', emoji: '📖', badge: 'bg-[#001B5E]', icon: 'bg-[#001B5E]', scoreColor: 'text-white', message: 'Tienes mucho por descubrir sobre construcción. ¡Progresol te acompaña en el camino!' },
-  { min: 4, max: 7, label: 'CONSTRUCTOR', emoji: '🔧', badge: 'border-2 border-[#14FF46]', icon: 'bg-[#14FF46]/15', scoreColor: 'text-white', message: '¡Vas por buen camino! Ya sabes bastante de construcción. Progresol es tu aliado.' },
-  { min: 8, max: 10, label: 'MAESTRO CONSTRUCTOR', emoji: '🏆', badge: 'bg-[#14FF46]', icon: 'bg-[#14FF46]', scoreColor: 'text-[#14FF46]', badgeText: 'text-[#0032A0]', message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
+  { min: 0, max: 1, label: 'APRENDIZ', emoji: '📖', badge: 'bg-[#001B5E]', icon: 'bg-[#001B5E]', scoreColor: 'text-white', message: 'Tienes mucho por descubrir sobre construcción. ¡Progresol te acompaña en el camino!' },
+  { min: 2, max: 3, label: 'CONSTRUCTOR', emoji: '🔧', badge: 'border-2 border-[#14FF46]', icon: 'bg-[#14FF46]/15', scoreColor: 'text-white', message: '¡Vas por buen camino! Ya sabes bastante de construcción. Progresol es tu aliado.' },
+  { min: 4, max: 5, label: 'MAESTRO CONSTRUCTOR', emoji: '🏆', badge: 'bg-[#14FF46]', icon: 'bg-[#14FF46]', scoreColor: 'text-[#14FF46]', badgeText: 'text-[#0032A0]', message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
 ]
 
 function getTier(score) {
@@ -12,6 +13,11 @@ function getTier(score) {
 
 export default function Resultado({ score, total, onReplay }) {
   const tier = getTier(score)
+
+  useEffect(() => {
+    const t = setTimeout(onReplay, 10000)
+    return () => clearTimeout(t)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="w-[1080px] h-[1920px] bg-[#0032A0] flex flex-col items-center absolute inset-0">

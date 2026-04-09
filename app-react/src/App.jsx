@@ -4,19 +4,31 @@ import Instrucciones from './components/Instrucciones'
 import Pregunta from './components/Pregunta'
 import Resultado from './components/Resultado'
 
-const TOTAL_QUESTIONS = 10
+const TOTAL_QUESTIONS = 5
 const TIME_PER_QUESTION = 15
 const FEEDBACK_DELAY = 2500
 const INACTIVITY_TIMEOUT = 120000
 
-function shuffle(arr) {
-  const a = [...arr]
-  for (let i = a.length - 1; i > 0; i--) {
+// Pool aleatorio: garantiza que todas las preguntas aparezcan antes de repetirse
+function _shuffleIndices(count) {
+  const arr = Array.from({ length: count }, (_, i) => i)
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j], a[i]]
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
   }
-  return a
+  return arr
 }
+
+let _pool = (() => {
+  try {
+    const saved = localStorage.getItem('trivia_pool')
+    if (saved) {
+      const p = JSON.parse(saved)
+      if (Array.isArray(p) && p.length > 0) return p
+    }
+  } catch (e) {}
+  return []
+})()
 
 export default function App() {
   const [screen, setScreen] = useState('portada')
@@ -58,7 +70,14 @@ export default function App() {
   const startGame = () => setScreen('instrucciones')
 
   const beginQuestions = () => {
-    const selected = shuffle(questions).slice(0, TOTAL_QUESTIONS)
+    const bank = questions
+    if (_pool.length === 0) _pool = _shuffleIndices(bank.length)
+    const selected = []
+    while (selected.length < TOTAL_QUESTIONS) {
+      if (_pool.length === 0) _pool = _shuffleIndices(bank.length)
+      selected.push(bank[_pool.shift()])
+    }
+    try { localStorage.setItem('trivia_pool', JSON.stringify(_pool)) } catch (e) {}
     setGameQuestions(selected)
     setCurrentIndex(0)
     setScore(0)

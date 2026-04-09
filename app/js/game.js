@@ -3,16 +3,37 @@
    Vanilla JS, 100% offline
    ======================================== */
 
-const TOTAL_QUESTIONS = 10;
+const TOTAL_QUESTIONS = 5;
 const TIME_PER_QUESTION = 15;
 const FEEDBACK_DELAY = 2500;
 const INACTIVITY_TIMEOUT = 120000;
 
 const TIERS = {
-  aprendiz:    { min: 0, max: 3, label: 'APRENDIZ',           emoji: '📖', badgeClass: 'badge--aprendiz',    message: 'Tienes mucho por descubrir sobre construcción. ¡Progresol te acompaña en el camino!' },
-  constructor: { min: 4, max: 7, label: 'CONSTRUCTOR',         emoji: '🔧', badgeClass: 'badge--constructor',  message: '¡Vas por buen camino! Ya sabes bastante de construcción. Progresol es tu aliado.' },
-  maestro:     { min: 8, max: 10, label: 'MAESTRO CONSTRUCTOR', emoji: '🏆', badgeClass: 'badge--maestro',     message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
+  aprendiz:    { min: 0, max: 1, label: 'APRENDIZ',           emoji: '📖', badgeClass: 'badge--aprendiz',    message: 'Tienes mucho por descubrir sobre construcción. ¡Progresol te acompaña en el camino!' },
+  constructor: { min: 2, max: 3, label: 'CONSTRUCTOR',         emoji: '🔧', badgeClass: 'badge--constructor',  message: '¡Vas por buen camino! Ya sabes bastante de construcción. Progresol es tu aliado.' },
+  maestro:     { min: 4, max: 5, label: 'MAESTRO CONSTRUCTOR', emoji: '🏆', badgeClass: 'badge--maestro',     message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
 };
+
+// Pool aleatorio: garantiza que todas las preguntas aparezcan antes de repetirse
+function _shuffleIndices(count) {
+  const arr = Array.from({ length: count }, (_, i) => i);
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+let _pool = (() => {
+  try {
+    const saved = localStorage.getItem('trivia_pool');
+    if (saved) {
+      const p = JSON.parse(saved);
+      if (Array.isArray(p) && p.length > 0) return p;
+    }
+  } catch (e) {}
+  return [];
+})();
 
 const game = {
   questions: [],
@@ -22,6 +43,7 @@ const game = {
   timer: null,
   timeLeft: 0,
   inactivityTimer: null,
+  resultTimer: null,
   answered: false,
 
   async init() {
@@ -57,7 +79,15 @@ const game = {
   // --- Begin questions ---
   showQuestion() {
     if (this.currentIndex === 0) {
-      this.currentQuestions = this.shuffle(this.questions).slice(0, TOTAL_QUESTIONS);
+      const bank = this.questions;
+      if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
+      const selected = [];
+      while (selected.length < TOTAL_QUESTIONS) {
+        if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
+        selected.push(bank[_pool.shift()]);
+      }
+      try { localStorage.setItem('trivia_pool', JSON.stringify(_pool)); } catch (e) {}
+      this.currentQuestions = selected;
       this.score = 0;
     }
     this.answered = false;
@@ -148,7 +178,10 @@ const game = {
     const correctIndex = q.respuesta_correcta;
     const isCorrect = selectedIndex === correctIndex;
 
-    if (isCorrect) this.score++;
+    if (isCorrect) {
+      this.score++;
+      this.triggerConfetti();
+    }
 
     // Update option cards
     const cards = document.querySelectorAll('.option-card');
@@ -228,15 +261,66 @@ const game = {
     else icon.classList.add('lottie-placeholder--green');
 
     this.showScreen('screen-resultado');
+    clearTimeout(this.resultTimer);
+    this.resultTimer = setTimeout(() => this.reset(), 10000);
   },
 
   // --- Reset ---
   reset() {
+    clearTimeout(this.resultTimer);
     this.currentIndex = 0;
     this.score = 0;
     this.answered = false;
     clearInterval(this.timer);
     this.showScreen('screen-portada');
+  },
+
+  // --- Confetti ---
+  triggerConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 1080, H = 1920;
+    canvas.width = W;
+    canvas.height = H;
+    canvas.style.display = 'block';
+
+    const colors = ['#14FF46', '#FFB300', '#FFFFFF', '#FF3B3B', '#00C853'];
+    const particles = Array.from({ length: 80 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * -300 - 50,
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 4 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      w: Math.random() * 12 + 6,
+      h: Math.random() * 8 + 4,
+      angle: Math.random() * Math.PI * 2,
+      spin: (Math.random() - 0.5) * 0.15,
+    }));
+
+    const end = performance.now() + 2200;
+    let raf;
+    const draw = (now) => {
+      if (now > end) {
+        ctx.clearRect(0, 0, W, H);
+        canvas.style.display = 'none';
+        return;
+      }
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.15;
+        p.angle += p.spin;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      raf = requestAnimationFrame(draw);
+    };
+    raf = requestAnimationFrame(draw);
   },
 
   // --- Inactivity ---

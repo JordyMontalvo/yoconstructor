@@ -86,13 +86,14 @@ html, body {
 }
 
 .t-option {
-  font-family: 'SG-Book-15', sans-serif;
-  font-size: 32px;
+  font-family: 'SG-SemiBold-15', sans-serif;
+  font-size: 40px;
+  line-height: 1.35;
   color: var(--fg-inverse);
 }
 
 .t-option-letter {
-  font-family: 'SG-SemiBold-10', sans-serif;
+  font-family: 'SG-SemiBold-15', sans-serif;
   font-size: 22px;
   color: var(--fg-primary);
 }
@@ -295,11 +296,12 @@ html, body {
   display: flex;
   align-items: center;
   width: 1000px;
-  height: 100px;
+  min-height: 130px;
+  height: auto;
   background: var(--surface-inverse);
   border-radius: var(--r-xl);
-  padding: 0 28px;
-  gap: 20px;
+  padding: 24px 36px;
+  gap: 24px;
   cursor: pointer;
   transition: transform 0.15s ease, opacity 0.3s ease, background 0.3s ease;
 }

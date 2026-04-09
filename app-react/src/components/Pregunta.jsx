@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import Confetti from './Confetti'
 
 const LETTERS = ['A', 'B', 'C', 'D']
 
@@ -59,6 +60,7 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
 
   return (
     <div className="w-[1080px] h-[1920px] bg-[#0032A0] flex flex-col items-center absolute inset-0">
+      {answered && isCorrect && <Confetti />}
       {/* Progress bar */}
       <div className="flex flex-col items-center w-full px-[60px] pt-[60px] pb-5 gap-4">
         <div className="flex items-center gap-2 w-full">
@@ -128,17 +130,17 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
               onClick={() => handleSelect(i)}
               disabled={answered}
               className={`flex items-center w-[1000px] ${cardClass} rounded-3xl transition-all duration-300 active:scale-[0.98] ${opacity}`}
-              style={{ height: 140, paddingLeft: 60, paddingRight: 60, gap: 16 }}
+              style={{ minHeight: 130, height: 'auto', padding: '24px 36px', gap: 24 }}
             >
               <div
                 className={`rounded-full ${letterBg} flex items-center justify-center shrink-0`}
-                style={{ width: 56, height: 56, minWidth: 56 }}
+                style={{ width: 64, height: 64, minWidth: 64 }}
               >
-                <span className="font-sg-sb10 text-[22px] text-white">
+                <span className="font-sg-sb15 text-[26px] text-white">
                   {LETTERS[i]}
                 </span>
               </div>
-              <span className={`font-sg-b15 text-[32px] ${textColor} text-left`}>{opcion}</span>
+              <span className={`font-sg-sb15 text-[40px] leading-[1.35] ${textColor} text-left`}>{opcion}</span>
             </button>
           )
         })}
