@@ -26,7 +26,9 @@ let _pool = (() => {
       const p = JSON.parse(saved)
       if (Array.isArray(p) && p.length > 0) return p
     }
-  } catch (e) {}
+  } catch {
+    /* localStorage o JSON inválido: se usa pool vacío */
+  }
   return []
 })()
 
@@ -77,7 +79,11 @@ export default function App() {
       if (_pool.length === 0) _pool = _shuffleIndices(bank.length)
       selected.push(bank[_pool.shift()])
     }
-    try { localStorage.setItem('trivia_pool', JSON.stringify(_pool)) } catch (e) {}
+    try {
+      localStorage.setItem('trivia_pool', JSON.stringify(_pool))
+    } catch {
+      /* almacenamiento no disponible: el pool solo vive en memoria */
+    }
     setGameQuestions(selected)
     setCurrentIndex(0)
     setScore(0)
@@ -109,6 +115,7 @@ export default function App() {
       {screen === 'instrucciones' && <Instrucciones onBegin={beginQuestions} />}
       {screen === 'pregunta' && gameQuestions[currentIndex] && (
         <Pregunta
+          key={currentIndex}
           question={gameQuestions[currentIndex]}
           index={currentIndex}
           total={TOTAL_QUESTIONS}

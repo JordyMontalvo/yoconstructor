@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Confetti from './Confetti'
 
 const LETTERS = ['A', 'B', 'C', 'D']
@@ -20,15 +20,24 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
   const [timeLeft, setTimeLeft] = useState(timePerQuestion)
   const [answered, setAnswered] = useState(false)
   const timerRef = useRef(null)
+  const answeredRef = useRef(false)
+  const onAnswerRef = useRef(onAnswer)
 
   const correctIndex = question.respuesta_correcta
 
-  // Reset state on new question
   useEffect(() => {
-    setSelected(null)
-    setAnswered(false)
-    setTimeLeft(timePerQuestion)
-  }, [question, timePerQuestion])
+    onAnswerRef.current = onAnswer
+  }, [onAnswer])
+
+  const handleSelect = useCallback((i) => {
+    if (answeredRef.current) return
+    answeredRef.current = true
+    setAnswered(true)
+    setSelected(i)
+    clearInterval(timerRef.current)
+    const isCorrect = i === correctIndex
+    onAnswerRef.current(isCorrect)
+  }, [correctIndex])
 
   // Timer
   useEffect(() => {
@@ -44,16 +53,7 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
       })
     }, 1000)
     return () => clearInterval(timerRef.current)
-  }, [question, answered])
-
-  const handleSelect = (i) => {
-    if (answered) return
-    setAnswered(true)
-    setSelected(i)
-    clearInterval(timerRef.current)
-    const isCorrect = i === correctIndex
-    onAnswer(isCorrect)
-  }
+  }, [question, answered, handleSelect])
 
   const isCorrect = selected === correctIndex
   const timerPct = (timeLeft / timePerQuestion) * 100
