@@ -76,34 +76,36 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
         <span className="font-sg-b25 text-[30px] text-white/70">{index + 1} de {total}</span>
       </div>
 
-      {/* Question */}
-      <div className="flex-1 flex flex-col items-center justify-center px-20 py-10">
+      {/* Misma altura de inicio para todas + pt calibrado al lienzo 1080×1920 (~centrado previo con ~3 líneas) */}
+      <div className="flex-1 flex flex-col items-center justify-start px-20 pt-[400px] pb-10 min-h-0 overflow-y-auto overscroll-contain">
         <p className="font-sg-sb15 text-[58px] leading-[1.25] text-white text-center max-w-[920px]">
           {question.pregunta}
         </p>
       </div>
 
-      {/* Feedback */}
-      {answered && (
-        <div className="flex flex-col items-center gap-4 pb-8">
-          <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
-            isCorrect ? 'bg-[#00C853]' : 'bg-[#FF3B3B]'
-          }`}>
-            {isCorrect ? <CheckIcon /> : <XIcon />}
+      {/* Options: feedback en capa absoluta para no desplazar la pregunta al responder */}
+      <div className="relative flex flex-col items-center w-full px-10 shrink-0">
+        {answered && (
+          <div
+            className="absolute left-0 right-0 bottom-full mb-6 flex flex-col items-center gap-4 pointer-events-none z-10 px-4"
+            aria-live="polite"
+          >
+            <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
+              isCorrect ? 'bg-[#00C853]' : 'bg-[#FF3B3B]'
+            }`}>
+              {isCorrect ? <CheckIcon /> : <XIcon />}
+            </div>
+            <span className={`font-sg-sb10 text-[48px] ${
+              isCorrect ? 'text-[#00C853]' : 'text-[#FF3B3B]'
+            }`}>
+              {isCorrect ? '¡Correcto!' : 'Incorrecto'}
+            </span>
+            {!isCorrect && (
+              <span className="font-sg-b15 text-[28px] text-white/70">La respuesta correcta es:</span>
+            )}
           </div>
-          <span className={`font-sg-sb10 text-[48px] ${
-            isCorrect ? 'text-[#00C853]' : 'text-[#FF3B3B]'
-          }`}>
-            {isCorrect ? '¡Correcto!' : 'Incorrecto'}
-          </span>
-          {!isCorrect && (
-            <span className="font-sg-b15 text-[28px] text-white/70">La respuesta correcta es:</span>
-          )}
-        </div>
-      )}
-
-      {/* Options */}
-      <div className="flex flex-col items-center w-full px-10 gap-5">
+        )}
+        <div className="flex flex-col items-center w-full gap-5">
         {question.opciones.map((opcion, i) => {
           let cardClass = 'bg-white'
           let textColor = 'text-[#0032A0]'
@@ -144,6 +146,7 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
             </button>
           )
         })}
+        </div>
       </div>
 
       {/* Timer */}
