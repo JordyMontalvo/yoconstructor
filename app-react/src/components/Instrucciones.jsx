@@ -10,7 +10,7 @@ export default function Instrucciones({ onBegin }) {
   return (
     <div className="w-[1080px] h-[1920px] bg-[#0032A0] flex flex-col items-center absolute inset-0">
       {/* Logo zone */}
-      <div className="h-[480px] flex flex-col items-center justify-center pt-[60px]">
+      <div className="h-[480px] flex flex-col items-center justify-center pt-[160px]">
         <img src={logoVertical} alt="Progresol" className="w-[280px]" />
       </div>
 
@@ -30,7 +30,7 @@ export default function Instrucciones({ onBegin }) {
       </div>
 
       {/* CTA + Footer */}
-      <div className="flex flex-col items-center pb-20 gap-10">
+      <div className="flex flex-col items-center pb-40 gap-10">
         <button
           onClick={onBegin}
           className="w-[600px] h-[110px] bg-[#14FF46] rounded-3xl flex items-center justify-center active:scale-[0.97] transition-transform"

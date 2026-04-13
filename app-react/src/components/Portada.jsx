@@ -4,7 +4,7 @@ export default function Portada({ onStart }) {
   return (
     <div className="w-[1080px] h-[1920px] bg-[#0032A0] flex flex-col items-center absolute inset-0">
       {/* Spacer top */}
-      <div className="h-[480px]" />
+      <div className="h-[580px]" />
 
       {/* Logo */}
       <img src={logoVertical} alt="Progresol" className="w-[380px]" />
@@ -23,7 +23,7 @@ export default function Portada({ onStart }) {
       <div className="flex-1" />
 
       {/* CTA + Footer */}
-      <div className="flex flex-col items-center pb-20 gap-10">
+      <div className="flex flex-col items-center pb-40 gap-10">
         <button
           onClick={onStart}
           className="w-[600px] h-[110px] bg-[#14FF46] rounded-3xl flex items-center justify-center active:scale-[0.97] transition-transform"
