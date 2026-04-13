@@ -1,0 +1,9 @@
+{
+  "outputDirectory": "app-react/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
