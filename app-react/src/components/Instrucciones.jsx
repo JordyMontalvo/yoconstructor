@@ -16,14 +16,14 @@ export default function Instrucciones({ onBegin }) {
 
       {/* Content zone */}
       <div className="flex-1 flex flex-col items-center justify-center px-20 gap-12">
-        <h2 className="font-sg-bi15 text-[56px] text-[#14FF46] text-center">¿Cómo jugar?</h2>
+        <h2 className="font-sg-sb15 text-[56px] text-[#14FF46] text-center">¿Cómo jugar?</h2>
         <div className="flex flex-col gap-9 w-full max-w-[860px]">
           {rules.map((rule, i) => (
             <div key={i} className="flex items-center gap-7">
               <div className="w-20 h-20 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                 <span className="font-sg-sb10 text-[36px] text-[#14FF46]">{rule.icon}</span>
               </div>
-              <span className="font-sg-b15 text-[38px] text-white leading-[1.3]">{rule.text}</span>
+              <span className="font-sg-sb15 text-[38px] text-white leading-[1.3]">{rule.text}</span>
             </div>
           ))}
         </div>
@@ -35,7 +35,7 @@ export default function Instrucciones({ onBegin }) {
           onClick={onBegin}
           className="w-[600px] h-[110px] bg-[#14FF46] rounded-3xl flex items-center justify-center active:scale-[0.97] transition-transform"
         >
-          <span className="font-sg-mi10 text-[40px] text-[#0032A0] tracking-[2px]">COMENZAR</span>
+          <span className="font-sg-sb15 text-[40px] text-[#0032A0] tracking-[2px]">COMENZAR</span>
         </button>
         <span className="font-sg-b25 text-[18px] text-white/40">Expo Yo Constructor 2026</span>
       </div>
