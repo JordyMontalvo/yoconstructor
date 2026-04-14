@@ -31,6 +31,10 @@ html, body {
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Kiosk mode (full size) */
@@ -43,9 +47,20 @@ html, body {
 
 /* Mobile preview mode */
 @media (max-width: 1079px) {
-  html, body {
+  html, body, #root {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
+/* Fallback extra para navegadores con vh inestable */
+@supports (height: calc(var(--app-vh, 1vh) * 100)) {
+  @media (max-width: 1079px) {
+    html, body, #root {
+      height: calc(var(--app-vh, 1vh) * 100);
+      min-height: calc(var(--app-vh, 1vh) * 100);
+    }
   }
 }
 
