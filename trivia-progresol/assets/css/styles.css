@@ -501,21 +501,32 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Feedback area (spacer entre opciones y timer — luis) */
-.feedback-area {
-  flex: 1 1 0%;
+/*
+ * Área de feedback: altura fija en la pantalla pregunta para que
+ * opciones + pregunta no se muevan al mostrar X, carita o caja educativa.
+ * Contenido siempre centrado en la misma franja (como la carita en acierto).
+ */
+#screen-pregunta .feedback-area {
+  flex: 0 0 600px;
+  width: 100%;
+  height: 600px;
+  max-height: 600px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 32px 40px;
+  padding: 24px 40px;
   gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.feedback-area.align-end {
-  justify-content: flex-end;
-  padding-bottom: 16px;
+.feedback-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .feedback-content {

@@ -213,7 +213,6 @@ const game = {
     const area = document.getElementById('feedback-area');
 
     if (isCorrect) {
-      area.classList.remove('align-end');
       area.innerHTML = `
         <div class="feedback-content">
           <svg width="120" height="146" viewBox="0 0 200 244" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -225,7 +224,6 @@ const game = {
         </div>
       `;
     } else {
-      area.classList.remove('align-end');
       area.innerHTML = `
         <div class="feedback-content">
           <div class="feedback-icon feedback-icon--incorrect">
@@ -239,7 +237,6 @@ const game = {
       const q = this.currentQuestions[this.currentIndex];
       const fi = q.feedback_incorrecto || { hook: 'Repasemos este tema.', explicacion: '' };
       this.educativoTimer = setTimeout(() => {
-        area.classList.add('align-end');
         const correctText = q.opciones[q.respuesta_correcta] || '';
         area.innerHTML = `
           <div class="educativo-box">
@@ -255,7 +252,6 @@ const game = {
   hideFeedback() {
     clearTimeout(this.educativoTimer);
     const area = document.getElementById('feedback-area');
-    area.classList.remove('align-end');
     area.innerHTML = '';
   },
 
