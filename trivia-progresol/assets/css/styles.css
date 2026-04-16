@@ -1,6 +1,5 @@
 /* ========================================
-   Trivia Progresol — Tótem 1080x1920
-   HTML5 + CSS3 Vanilla
+   Trivia Progresol — Tótem 1080x1920 (+ viewport escalado, estilos luis Paper v4)
    ======================================== */
 
 @import url('fonts.css');
@@ -89,9 +88,9 @@ html, body {
 }
 
 .t-question {
-  font-family: 'SG-SemiBold-15', sans-serif;
-  font-size: 58px;
-  line-height: 1.25;
+  font-family: 'SG-Book-15', sans-serif;
+  font-size: 59px;
+  line-height: 74px;
   color: var(--fg-primary);
   text-align: center;
   max-width: 920px;
@@ -111,14 +110,14 @@ html, body {
 }
 
 .t-option {
-  font-family: 'SG-SemiBold-15', sans-serif;
-  font-size: 40px;
-  line-height: 1.35;
+  font-family: 'SG-Book-15', sans-serif;
+  font-size: 32px;
+  line-height: 40px;
   color: var(--fg-inverse);
 }
 
 .t-option-letter {
-  font-family: 'SG-SemiBold-15', sans-serif;
+  font-family: 'SG-Book-15', sans-serif;
   font-size: 22px;
   color: var(--fg-primary);
 }
@@ -161,8 +160,9 @@ html, body {
 }
 
 .t-timer {
-  font-family: 'SG-SemiBold-10', sans-serif;
+  font-family: 'SG-Book-15', sans-serif;
   font-size: 56px;
+  line-height: 68px;
   color: var(--fg-primary);
 }
 
@@ -179,12 +179,13 @@ html, body {
 }
 
 .t-feedback {
-  font-family: 'SG-SemiBold-10', sans-serif;
+  font-family: 'SG-SemiBold-15', sans-serif;
   font-size: 48px;
+  line-height: 58px;
 }
 
-.t-feedback--correct { color: var(--accent-correct); }
-.t-feedback--incorrect { color: var(--accent-incorrect); }
+.t-feedback--correct { color: var(--accent-primary); }
+.t-feedback--incorrect { color: #E74C3C; }
 
 .t-feedback-hint {
   font-family: 'SG-Book-15', sans-serif;
@@ -213,6 +214,12 @@ html, body {
   pointer-events: auto;
 }
 
+.screen--pregunta .progress-bar,
+.screen--pregunta .zone-interactive,
+.screen--pregunta .timer {
+  flex-shrink: 0;
+}
+
 .zone-brand {
   display: flex;
   flex-direction: column;
@@ -235,35 +242,8 @@ html, body {
 }
 
 .zone-content--question {
-  padding: 60px 80px 40px;
-}
-
-/* Pantalla pregunta: igual que Pregunta.jsx (producción) — pregunta fija arriba, feedback absolute sobre opciones */
-.screen--pregunta {
-  flex-direction: column;
-}
-
-.question-panel {
-  flex: 1;
+  padding: 20px 80px;
   min-height: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 400px 80px 40px;
-  box-sizing: border-box;
-}
-
-.options-stack {
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
-  padding: 0 40px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .zone-interactive {
@@ -273,12 +253,6 @@ html, body {
   width: 100%;
   padding: 0 40px;
   gap: 16px;
-}
-
-.zone-interactive--options {
-  padding: 0;
-  gap: 20px;
-  width: 100%;
 }
 
 .zone-footer {
@@ -355,13 +329,13 @@ html, body {
   display: flex;
   align-items: center;
   width: 1000px;
-  min-height: 130px;
-  height: auto;
+  height: 100px;
   background: var(--surface-inverse);
   border-radius: var(--r-xl);
-  padding: 24px 36px;
-  gap: 24px;
+  padding: 0 28px;
+  gap: 20px;
   cursor: pointer;
+  flex-shrink: 0;
   transition: transform 0.15s ease, opacity 0.3s ease, background 0.3s ease;
 }
 
@@ -375,7 +349,7 @@ html, body {
 }
 
 .option-card.correct {
-  background: var(--accent-correct);
+  background: var(--accent-primary);
 }
 
 .option-card.correct .t-option {
@@ -445,23 +419,19 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
-  border-radius: var(--r-full);
-}
-
-.feedback-icon--correct {
-  background: var(--accent-correct);
+  flex-shrink: 0;
 }
 
 .feedback-icon--incorrect {
-  background: var(--accent-incorrect);
+  width: 120px;
+  height: 120px;
+  border-radius: var(--r-full);
+  background: #E74C3C;
 }
 
-.feedback-icon svg {
-  width: 40px;
-  height: 40px;
-  fill: white;
+.feedback-icon--incorrect svg {
+  width: 56px;
+  height: 56px;
 }
 
 /* Badge */
@@ -531,25 +501,53 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Feedback block (flujo normal en otras pantallas si aplica) */
-.feedback-block {
+/* Feedback area (spacer entre opciones y timer — luis) */
+.feedback-area {
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 20px 0 32px;
+  justify-content: center;
+  width: 100%;
+  padding: 32px 40px;
+  gap: 12px;
 }
 
-/* Capa sobre las opciones: no desplaza la pregunta (Pregunta.jsx: absolute bottom-full) */
-.feedback-block--overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 100%;
-  margin-bottom: 24px;
-  padding: 0 16px;
-  pointer-events: none;
-  z-index: 10;
+.feedback-area.align-end {
+  justify-content: flex-end;
+  padding-bottom: 16px;
+}
+
+.feedback-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Educativo box */
+.educativo-box {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 32px 36px;
+  gap: 14px;
+  animation: fadeIn 0.5s ease;
+}
+
+.educativo-box .t-educativo {
+  font-family: 'SG-Book-15', sans-serif;
+  font-size: 48px;
+  line-height: 64px;
+  color: var(--fg-primary);
+  white-space: pre-wrap;
+}
+
+.educativo-box .t-educativo--muted {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* --- Animations --- */

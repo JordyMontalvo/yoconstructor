@@ -23,7 +23,11 @@
         "Son distribuidoras"
       ],
       "respuesta_correcta": 2,
-      "categoria": "unacem"
+      "categoria": "unacem",
+      "feedback_incorrecto": {
+        "hook": "Casi, pero ojo con esto 😊",
+        "explicacion": "Eso garantiza que todas las marcas mantienen estándares de calidad y confianza en cada etapa de la construcción."
+      }
     },
     {
       "id": 2,
@@ -35,7 +39,11 @@
         "Un importador"
       ],
       "respuesta_correcta": 1,
-      "categoria": "unacem"
+      "categoria": "unacem",
+      "feedback_incorrecto": {
+        "hook": "Va más allá de solo cemento 👀",
+        "explicacion": "Nuestro enfoque es brindar soluciones completas a lo largo de toda la cadena constructiva."
+      }
     },
     {
       "id": 3,
@@ -47,7 +55,11 @@
         "Ofrecer productos de construcción"
       ],
       "respuesta_correcta": 1,
-      "categoria": "unacem"
+      "categoria": "unacem",
+      "feedback_incorrecto": {
+        "hook": "No es solo vender, hay algo más grande detrás 💪",
+        "explicacion": "Porque hoy construir bien también es pensar en el futuro."
+      }
     },
     {
       "id": 4,
@@ -59,7 +71,11 @@
         "🏛️ Hacer columnas"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "Aquí hay que tenerlo clarísimo porque se usa todos los días 👷‍♂️",
+        "explicacion": "El mortero cumple un rol estructural y funcional en la correcta ejecución de muros."
+      }
     },
     {
       "id": 5,
@@ -71,7 +87,11 @@
         "Hacer cimientos"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "No te preocupes, es una confusión común 😊",
+        "explicacion": "Además del aspecto estético, contribuye a la durabilidad de toda la pared."
+      }
     },
     {
       "id": 6,
@@ -83,7 +103,11 @@
         "Son más caros sin beneficio"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "En obra, esto te ahorra tiempo y problemas 👀",
+        "explicacion": "Estos productos cuentan con dosificación precisa, lo que reduce errores en la mezcla y asegura un desempeño uniforme. En obra se traduce en mayor eficiencia y mejores acabados."
+      }
     },
     {
       "id": 7,
@@ -95,7 +119,11 @@
         "🎨 Pintura"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "No se quedan solo en concreto 😉",
+        "explicacion": "UNICON ofrece soluciones listas para facilitar el trabajo en obra."
+      }
     },
     {
       "id": 8,
@@ -107,7 +135,11 @@
         "Necesita maquinaria especial"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "Es importante evaluar el impacto en el proceso constructivo.",
+        "explicacion": "Esto permite estandarizar resultados y mejorar tiempos de ejecución."
+      }
     },
     {
       "id": 9,
@@ -119,7 +151,11 @@
         "Son nuevas"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "Estas marcas tienen un posicionamiento consolidado.",
+        "explicacion": "Su trayectoria respalda su desempeño en distintos tipos de obra."
+      }
     },
     {
       "id": 10,
@@ -131,7 +167,11 @@
         "Por moda"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "No es solo por precio 😉",
+        "explicacion": "En obra, lo que protege hogares… se sigue usando."
+      }
     },
     {
       "id": 11,
@@ -143,7 +183,11 @@
         "Rapidez únicamente"
       ],
       "respuesta_correcta": 1,
-      "categoria": "productos"
+      "categoria": "productos",
+      "feedback_incorrecto": {
+        "hook": "Va más por lo que representan en obra 💪",
+        "explicacion": "Valores que todo maestro busca en su trabajo del día a día."
+      }
     },
     {
       "id": 12,
@@ -155,7 +199,11 @@
         "Un tipo de concreto"
       ],
       "respuesta_correcta": 1,
-      "categoria": "progresol"
+      "categoria": "progresol",
+      "feedback_incorrecto": {
+        "hook": "Uy maestro 👀",
+        "explicacion": "Donde encuentras soluciones confiables cerca a tu obra."
+      }
     },
     {
       "id": 14,
@@ -167,7 +215,11 @@
         "Solo concreto"
       ],
       "respuesta_correcta": 2,
-      "categoria": "construccion"
+      "categoria": "construccion",
+      "feedback_incorrecto": {
+        "hook": "Aquí está el valor completo 👇",
+        "explicacion": "Todo lo que necesitas, conectado en un solo sistema."
+      }
     },
     {
       "id": 15,
@@ -179,7 +231,11 @@
         "Solo sube el costo"
       ],
       "respuesta_correcta": 1,
-      "categoria": "construccion"
+      "categoria": "construccion",
+      "feedback_incorrecto": {
+        "hook": "Esto impacta directamente en tu obra 👷‍♂️",
+        "explicacion": "Una buena construcción empieza por buenos materiales."
+      }
     },
     {
       "id": 16,
@@ -191,7 +247,11 @@
         "🧥 Capucha"
       ],
       "respuesta_correcta": 0,
-      "categoria": "seguridad"
+      "categoria": "seguridad",
+      "feedback_incorrecto": {
+        "hook": "La seguridad es un requisito indispensable.",
+        "explicacion": "Es un elemento esencial para la protección del trabajador."
+      }
     },
     {
       "id": 17,
@@ -203,7 +263,11 @@
         "🌨️ Para el frío"
       ],
       "respuesta_correcta": 1,
-      "categoria": "seguridad"
+      "categoria": "seguridad",
+      "feedback_incorrecto": {
+        "hook": "Su función es estrictamente preventiva.",
+        "explicacion": "Reduce significativamente el riesgo de lesiones graves."
+      }
     },
     {
       "id": 18,
@@ -215,7 +279,11 @@
         "🌧️ Clima"
       ],
       "respuesta_correcta": 1,
-      "categoria": "seguridad"
+      "categoria": "seguridad",
+      "feedback_incorrecto": {
+        "hook": "La responsabilidad es compartida.",
+        "explicacion": "La seguridad en obra depende del compromiso de todo el equipo."
+      }
     },
     {
       "id": 19,
@@ -227,7 +295,11 @@
         "Nadie"
       ],
       "respuesta_correcta": 1,
-      "categoria": "seguridad"
+      "categoria": "seguridad",
+      "feedback_incorrecto": {
+        "hook": "La responsabilidad es compartida.",
+        "explicacion": "La seguridad en obra depende del compromiso de todo el equipo."
+      }
     },
     {
       "id": 20,
@@ -251,7 +323,11 @@
         "Alta temperatura"
       ],
       "respuesta_correcta": 2,
-      "categoria": "tecnico"
+      "categoria": "tecnico",
+      "feedback_incorrecto": {
+        "hook": "Hace referencia a una propiedad específica del material.",
+        "explicacion": "Diseñado para condiciones de alta agresividad química."
+      }
     },
     {
       "id": 22,
@@ -263,7 +339,11 @@
         "En pintura"
       ],
       "respuesta_correcta": 1,
-      "categoria": "tecnico"
+      "categoria": "tecnico",
+      "feedback_incorrecto": {
+        "hook": "No es para cualquier caso 👀",
+        "explicacion": "Ahí es donde realmente hace la diferencia."
+      }
     },
     {
       "id": 23,
@@ -275,7 +355,11 @@
         "Yeso"
       ],
       "respuesta_correcta": 1,
-      "categoria": "tecnico"
+      "categoria": "tecnico",
+      "feedback_incorrecto": {
+        "hook": "Aquí la elección del material es crítica.",
+        "explicacion": "Permite proteger la estructura frente al deterioro por agentes externos."
+      }
     }
   ]
 }

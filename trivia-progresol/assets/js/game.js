@@ -1,11 +1,14 @@
 /* ========================================
    Trivia Progresol — Game Logic
    Vanilla JS, 100% offline (file://)
+   Cambios luis: feedback Paper v4, feedback_incorrecto, delays (#2 #3)
    ======================================== */
 
 const TOTAL_QUESTIONS = 5;
 const TIME_PER_QUESTION = 15;
 const FEEDBACK_DELAY = 2500;
+const FEEDBACK_DELAY_INCORRECT = 5500;
+const EDUCATIVO_DELAY = 1000;
 const INACTIVITY_TIMEOUT = 120000;
 
 const TIERS = {
@@ -44,6 +47,7 @@ const game = {
   timeLeft: 0,
   inactivityTimer: null,
   resultTimer: null,
+  educativoTimer: null,
   answered: false,
 
   async init() {
@@ -60,7 +64,6 @@ const game = {
     document.addEventListener('click', () => this.resetInactivity());
   },
 
-  // --- Fisher-Yates shuffle ---
   shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -70,18 +73,15 @@ const game = {
     return a;
   },
 
-  // --- Screen transitions ---
   showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   },
 
-  // --- Start game ---
   start() {
     this.showScreen('screen-instrucciones');
   },
 
-  // --- Begin questions ---
   showQuestion() {
     if (this.currentIndex === 0) {
       const bank = this.questions;
@@ -103,7 +103,6 @@ const game = {
     this.showScreen('screen-pregunta');
   },
 
-  // --- Render progress bar ---
   renderProgress() {
     const container = document.getElementById('progress-segments');
     container.innerHTML = '';
@@ -115,7 +114,6 @@ const game = {
     document.getElementById('progress-text').textContent = `${this.currentIndex + 1} de ${TOTAL_QUESTIONS}`;
   },
 
-  // --- Render question + options ---
   renderQuestion() {
     const q = this.currentQuestions[this.currentIndex];
     document.getElementById('question-text').textContent = q.pregunta;
@@ -139,7 +137,6 @@ const game = {
     });
   },
 
-  // --- Timer ---
   startTimer() {
     this.timeLeft = TIME_PER_QUESTION;
     const timerEl = document.getElementById('timer');
@@ -163,7 +160,7 @@ const game = {
 
       if (this.timeLeft <= 0) {
         clearInterval(this.timer);
-        this.answer(-1); // timeout
+        this.answer(-1);
       }
     }, 1000);
   },
@@ -173,7 +170,6 @@ const game = {
     document.getElementById('timer').classList.add('stopped');
   },
 
-  // --- Answer ---
   answer(selectedIndex) {
     if (this.answered) return;
     this.answered = true;
@@ -188,7 +184,6 @@ const game = {
       this.triggerConfetti();
     }
 
-    // Update option cards
     const cards = document.querySelectorAll('.option-card');
     cards.forEach((card, i) => {
       card.style.pointerEvents = 'none';
@@ -201,10 +196,9 @@ const game = {
       }
     });
 
-    // Show feedback
     this.showFeedback(isCorrect);
 
-    // Next question after delay
+    const delay = isCorrect ? FEEDBACK_DELAY : FEEDBACK_DELAY_INCORRECT;
     setTimeout(() => {
       this.currentIndex++;
       if (this.currentIndex >= TOTAL_QUESTIONS) {
@@ -212,39 +206,59 @@ const game = {
       } else {
         this.showQuestion();
       }
-    }, FEEDBACK_DELAY);
+    }, delay);
   },
 
-  // --- Feedback ---
   showFeedback(isCorrect) {
-    const block = document.getElementById('feedback-block');
-    block.style.display = 'flex';
+    const area = document.getElementById('feedback-area');
 
     if (isCorrect) {
-      block.innerHTML = `
-        <div class="feedback-icon feedback-icon--correct">
-          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+      area.classList.remove('align-end');
+      area.innerHTML = `
+        <div class="feedback-content">
+          <svg width="120" height="146" viewBox="0 0 200 244" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M162.047 144.684H120.614V0H162.047V144.684Z" fill="#14FF46"/>
+            <path d="M79.25 144.684H37.817V0H79.25V144.684Z" fill="#14FF46"/>
+            <path d="M99.933 243.912C69.046 243.912 38.161 232.168 14.65 208.676L0 194.042L29.298 164.772L43.946 179.408C74.818 210.248 125.046 210.248 155.919 179.408L170.568 164.772L199.864 194.042L185.216 208.676C161.703 232.168 130.818 243.912 99.933 243.912Z" fill="#14FF46"/>
+          </svg>
+          <span class="t-feedback t-feedback--correct">¡Correcto!</span>
         </div>
-        <span class="t-feedback t-feedback--correct">¡Correcto!</span>
       `;
     } else {
-      block.innerHTML = `
-        <div class="feedback-icon feedback-icon--incorrect">
-          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      area.classList.remove('align-end');
+      area.innerHTML = `
+        <div class="feedback-content">
+          <div class="feedback-icon feedback-icon--incorrect">
+            <svg width="56" height="56" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 9L27 27M27 9L9 27" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="t-feedback t-feedback--incorrect">Incorrecto</span>
         </div>
-        <span class="t-feedback t-feedback--incorrect">Incorrecto</span>
-        <span class="t-feedback-hint">La respuesta correcta es:</span>
       `;
+      const q = this.currentQuestions[this.currentIndex];
+      const fi = q.feedback_incorrecto || { hook: 'Repasemos este tema.', explicacion: '' };
+      this.educativoTimer = setTimeout(() => {
+        area.classList.add('align-end');
+        const correctText = q.opciones[q.respuesta_correcta] || '';
+        area.innerHTML = `
+          <div class="educativo-box">
+            <p class="t-educativo">${escapeHtml(fi.hook)}</p>
+            <p class="t-educativo">\u{1F449} La respuesta correcta es:\n${escapeHtml(correctText)}</p>
+            <p class="t-educativo t-educativo--muted">${escapeHtml(fi.explicacion)}</p>
+          </div>
+        `;
+      }, EDUCATIVO_DELAY);
     }
   },
 
   hideFeedback() {
-    const block = document.getElementById('feedback-block');
-    block.style.display = 'none';
-    block.innerHTML = '';
+    clearTimeout(this.educativoTimer);
+    const area = document.getElementById('feedback-area');
+    area.classList.remove('align-end');
+    area.innerHTML = '';
   },
 
-  // --- Result ---
   showResult() {
     const tier = Object.values(TIERS).find(t => this.score >= t.min && this.score <= t.max);
 
@@ -254,11 +268,9 @@ const game = {
     document.getElementById('result-emoji').textContent = tier.emoji;
     document.getElementById('result-message').textContent = tier.message;
 
-    // Badge style
     const badge = document.getElementById('result-badge');
     badge.className = 'badge ' + tier.badgeClass;
 
-    // Icon style
     const icon = document.getElementById('result-icon');
     icon.className = 'lottie-placeholder';
     if (tier === TIERS.aprendiz) icon.classList.add('lottie-placeholder--dark');
@@ -270,9 +282,9 @@ const game = {
     this.resultTimer = setTimeout(() => this.reset(), 10000);
   },
 
-  // --- Reset ---
   reset() {
     clearTimeout(this.resultTimer);
+    clearTimeout(this.educativoTimer);
     this.currentIndex = 0;
     this.score = 0;
     this.answered = false;
@@ -280,7 +292,6 @@ const game = {
     this.showScreen('screen-portada');
   },
 
-  // --- Confetti ---
   triggerConfetti() {
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
@@ -328,7 +339,6 @@ const game = {
     raf = requestAnimationFrame(draw);
   },
 
-  // --- Inactivity ---
   resetInactivity() {
     clearTimeout(this.inactivityTimer);
     this.inactivityTimer = setTimeout(() => {
@@ -337,7 +347,12 @@ const game = {
   },
 };
 
-// Ajuste de escala (mismo criterio que MobileWrapper en la app React)
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
 function setupKioskViewport() {
   const inner = document.getElementById('viewport-inner');
   const stage = document.getElementById('kiosk-stage');
@@ -361,6 +376,5 @@ function setupKioskViewport() {
   window.visualViewport?.addEventListener('resize', resize);
 }
 
-// Boot
 setupKioskViewport();
 game.init();

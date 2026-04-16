@@ -61,19 +61,17 @@
     </div>
   </section>
 
-  <!-- ====== 03 — PREGUNTA ====== -->
+  <!-- ====== 03 — PREGUNTA ( Paper v4: luis — pregunta / opciones / feedback-area / timer ) ====== -->
   <section id="screen-pregunta" class="screen screen--pregunta">
     <div class="progress-bar">
       <div class="progress-segments" id="progress-segments"></div>
       <span class="t-indicator" id="progress-text">1 de 5</span>
     </div>
-    <div class="question-panel">
+    <div class="zone-content zone-content--question">
       <p class="t-question" id="question-text"></p>
     </div>
-    <div class="options-stack">
-      <div id="feedback-block" class="feedback-block feedback-block--overlay" style="display: none;" aria-live="polite"></div>
-      <div class="zone-interactive zone-interactive--options" id="options-container"></div>
-    </div>
+    <div class="zone-interactive" id="options-container"></div>
+    <div id="feedback-area" class="feedback-area" aria-live="polite"></div>
     <div class="timer" id="timer">
       <span class="t-timer" id="timer-text">15</span>
       <div class="timer-bar">
