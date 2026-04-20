@@ -281,8 +281,8 @@
       "respuesta_correcta": 1,
       "categoria": "seguridad",
       "feedback_incorrecto": {
-        "hook": "La responsabilidad es compartida.",
-        "explicacion": "La seguridad en obra depende del compromiso de todo el equipo."
+        "hook": "No es cuestión de suerte 👀",
+        "explicacion": "En obra, confiarse es el mayor riesgo."
       }
     },
     {
@@ -297,8 +297,8 @@
       "respuesta_correcta": 1,
       "categoria": "seguridad",
       "feedback_incorrecto": {
-        "hook": "La responsabilidad es compartida.",
-        "explicacion": "La seguridad en obra depende del compromiso de todo el equipo."
+        "hook": "Esto es clave tenerlo claro 🚧",
+        "explicacion": "La seguridad es tarea de equipo."
       }
     },
     {
@@ -311,7 +311,11 @@
         "50 kg"
       ],
       "respuesta_correcta": 2,
-      "categoria": "tecnico"
+      "categoria": "tecnico",
+      "feedback_incorrecto": {
+        "hook": "Siempre te damos el peso correcto y adecuado para tu obra.",
+        "explicacion": ""
+      }
     },
     {
       "id": 21,

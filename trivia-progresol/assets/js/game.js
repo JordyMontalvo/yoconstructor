@@ -238,11 +238,14 @@ const game = {
       const fi = q.feedback_incorrecto || { hook: 'Repasemos este tema.', explicacion: '' };
       this.educativoTimer = setTimeout(() => {
         const correctText = q.opciones[q.respuesta_correcta] || '';
+        const exp = fi.explicacion != null && String(fi.explicacion).trim()
+          ? `<p class="t-educativo t-educativo--muted">${escapeHtml(fi.explicacion)}</p>`
+          : '';
         area.innerHTML = `
           <div class="educativo-box">
             <p class="t-educativo">${escapeHtml(fi.hook)}</p>
             <p class="t-educativo">\u{1F449} La respuesta correcta es:\n${escapeHtml(correctText)}</p>
-            <p class="t-educativo t-educativo--muted">${escapeHtml(fi.explicacion)}</p>
+            ${exp}
           </div>
         `;
       }, EDUCATIVO_DELAY);
