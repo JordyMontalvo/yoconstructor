@@ -1,7 +1,7 @@
 import logoVertical from '../assets/logo-vertical.svg'
 
 const rules = [
-  { icon: '10', text: 'Responde 10 preguntas sobre construcción' },
+  { icon: '5', text: 'Responde 5 preguntas sobre construcción' },
   { icon: '15', text: 'Tienes 15 segundos por pregunta' },
   { icon: '★', text: 'Descubre tu nivel de constructor' },
 ]
