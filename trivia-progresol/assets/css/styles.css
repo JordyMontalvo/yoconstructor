@@ -278,8 +278,8 @@ html, body {
 
 .logo-unacem {
   position: absolute;
-  top: 60px;
-  right: 60px;
+  top: 0;
+  right: 0;
   width: 140px;
   height: auto;
   object-fit: contain;
@@ -593,3 +593,15 @@ html, body {
 .text-center { text-align: center; }
 .gap-48 { gap: 48px; }
 .gap-36 { gap: 36px; }
+
+/* Custom Screen Styles */
+.screen--red {
+  background: #E74C3C !important;
+}
+
+.logo-center {
+  width: 600px;
+  height: auto;
+  margin-top: -100px; /* Slight offset for visual center */
+}
+
