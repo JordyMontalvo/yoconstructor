@@ -425,11 +425,7 @@ html, body {
   border-radius: var(--r-xl);
 }
 
-.badge--aprendiz {
-  background: var(--surface-secondary);
-}
-
-.badge--constructor {
+.badge--nivel2 {
   border: 2px solid var(--accent-primary);
 }
 
