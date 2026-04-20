@@ -262,7 +262,10 @@ const game = {
 
     this.showScreen('screen-resultado');
     clearTimeout(this.resultTimer);
-    this.resultTimer = setTimeout(() => this.reset(), 10000);
+    this.resultTimer = setTimeout(() => {
+      this.showScreen('screen-final');
+      this.resultTimer = setTimeout(() => this.reset(), 5000);
+    }, 8000);
   },
 
   // --- Reset ---
