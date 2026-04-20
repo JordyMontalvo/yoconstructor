@@ -1,9 +1,3 @@
 {
-  "outputDirectory": "app-react/dist",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "outputDirectory": "trivia-progresol"
 }

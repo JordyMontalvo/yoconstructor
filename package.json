@@ -2,7 +2,6 @@
   "name": "yoconstructor-root",
   "private": true,
   "scripts": {
-    "install": "npm install --prefix app-react",
-    "build": "npm run build --prefix app-react"
+    "build": "node -e \"console.log('Deploy: carpeta trivia-progresol (estático, sin paso de build).')\""
   }
 }
