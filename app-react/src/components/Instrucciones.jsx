@@ -3,7 +3,7 @@ import logoVertical from '../assets/logo-vertical.svg'
 const rules = [
   { icon: '5', text: 'Responde 5 preguntas sobre construcción' },
   { icon: '15', text: 'Tienes 15 segundos por pregunta' },
-  { icon: '★', text: 'Descubre tu nivel de constructor' },
+  { icon: '★', text: 'Descubre si eres Constructor o Maestro Constructor' },
 ]
 
 export default function Instrucciones({ onBegin }) {

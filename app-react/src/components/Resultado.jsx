@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
 const TIERS = [
-  { min: 0, max: 2, label: 'NIVEL 2', emoji: '🔧', badge: 'border-2 border-[#14FF46]', icon: 'bg-[#14FF46]/15', scoreColor: 'text-white', message: '¡Vas por buen camino! Sigue sumando conocimiento sobre construcción. Progresol es tu aliado.' },
-  { min: 3, max: 5, label: 'MAESTRO', emoji: '🏆', badge: 'bg-[#14FF46]', icon: 'bg-[#14FF46]', scoreColor: 'text-[#14FF46]', badgeText: 'text-[#0032A0]', message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
+  { min: 0, max: 2, label: 'CONSTRUCTOR', emoji: '🔧', badge: 'border-2 border-[#14FF46]', icon: 'bg-[#14FF46]/15', scoreColor: 'text-white', message: '¡Vas por buen camino! Sigue sumando conocimiento sobre construcción. Progresol es tu aliado.' },
+  { min: 3, max: 5, label: 'MAESTRO CONSTRUCTOR', emoji: '🏆', badge: 'bg-[#14FF46]', icon: 'bg-[#14FF46]', scoreColor: 'text-[#14FF46]', badgeText: 'text-[#0032A0]', message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
 ]
 
 function getTier(score) {

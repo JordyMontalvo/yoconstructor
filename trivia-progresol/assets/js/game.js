@@ -12,8 +12,8 @@ const EDUCATIVO_DELAY = 1000;
 const INACTIVITY_TIMEOUT = 120000;
 
 const TIERS = {
-  nivel2: { min: 0, max: 2, label: 'NIVEL 2', emoji: '🔧', badgeClass: 'badge--nivel2', message: '¡Vas por buen camino! Sigue sumando conocimiento sobre construcción. Progresol es tu aliado.' },
-  maestro: { min: 3, max: 5, label: 'MAESTRO', emoji: '🏆', badgeClass: 'badge--maestro', message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
+  constructor: { min: 0, max: 2, label: 'CONSTRUCTOR', emoji: '🔧', badgeClass: 'badge--constructor', message: '¡Vas por buen camino! Sigue sumando conocimiento sobre construcción. Progresol es tu aliado.' },
+  maestro: { min: 3, max: 5, label: 'MAESTRO CONSTRUCTOR', emoji: '🏆', badgeClass: 'badge--maestro', message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
 };
 
 // Pool aleatorio: garantiza que todas las preguntas aparezcan antes de repetirse
@@ -273,7 +273,7 @@ const game = {
 
     const icon = document.getElementById('result-icon');
     icon.className = 'lottie-placeholder';
-    if (tier === TIERS.nivel2) icon.classList.add('lottie-placeholder--green-subtle');
+    if (tier === TIERS.constructor) icon.classList.add('lottie-placeholder--green-subtle');
     else icon.classList.add('lottie-placeholder--green');
 
     this.showScreen('screen-resultado');

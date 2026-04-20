@@ -244,14 +244,17 @@ html, body {
   width: 280px;
 }
 
+/* Mismas medidas que logo-unacem-2.svg (130×170) */
 .logo-unacem {
   position: absolute;
   top: 0;
   right: 60px;
-  width: 140px;
-  height: auto;
+  width: 130px;
+  height: 170px;
   object-fit: contain;
   z-index: 10;
+  display: block;
+  vertical-align: top;
 }
 
 /* CTA Button */
@@ -425,7 +428,7 @@ html, body {
   border-radius: var(--r-xl);
 }
 
-.badge--nivel2 {
+.badge--constructor {
   border: 2px solid var(--accent-primary);
 }
 
@@ -520,6 +523,10 @@ html, body {
 .logo-center {
   width: 600px;
   height: auto;
+  aspect-ratio: 130 / 170;
   margin-top: -100px; /* Slight offset for visual center */
+  display: block;
+  vertical-align: top;
+  object-fit: contain;
 }
 
