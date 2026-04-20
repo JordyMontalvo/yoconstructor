@@ -186,6 +186,7 @@ html, body {
 .screen.active {
   opacity: 1;
   pointer-events: auto;
+  z-index: 1;
 }
 
 .zone-brand {
