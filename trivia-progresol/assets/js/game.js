@@ -88,6 +88,18 @@ const game = {
   confettiRaf: null,
   answered: false,
   _inactivityListenersAttached: false,
+  tapAudio: null,
+
+  playTap() {
+    try {
+      const a = this.tapAudio;
+      if (!a) return;
+      a.currentTime = 0;
+      void a.play().catch(() => {});
+    } catch (e) {
+      /* ignore */
+    }
+  },
 
   async init() {
     try {
@@ -103,6 +115,8 @@ const game = {
         throw new Error('data');
       }
       this.questions = data.preguntas;
+      this.tapAudio = new Audio('assets/sounds/tap-button.mp3');
+      this.tapAudio.preload = 'auto';
     } catch (e) {
       this.questions = [];
       const errEl = document.getElementById('init-error');
@@ -141,7 +155,20 @@ const game = {
   },
 
   start() {
+    this.playTap();
     this.showScreen('screen-instrucciones');
+  },
+
+  /** COMENZAR (desde instrucciones): con sonido. `showQuestion()` interno no. */
+  comenzar() {
+    this.playTap();
+    this.showQuestion();
+  },
+
+  /** VOLVER A JUGAR: con sonido; `reset()` solo para timers/inactividad. */
+  goToPortada() {
+    this.playTap();
+    this.reset();
   },
 
   showQuestion() {
@@ -288,6 +315,7 @@ const game = {
 
   answer(selectedIndex) {
     if (this.answered) return;
+    if (selectedIndex >= 0) this.playTap();
     this.answered = true;
     this.stopTimer();
 
