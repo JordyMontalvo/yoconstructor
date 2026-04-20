@@ -17,7 +17,7 @@ export default function Resultado({ score, total, onReplay, onFinish }) {
     const t = setTimeout(() => {
       if (onFinish) onFinish()
       else onReplay()
-    }, 8000)
+    }, 5000)
     return () => clearTimeout(t)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
