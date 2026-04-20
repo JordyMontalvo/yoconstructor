@@ -1,8 +1,15 @@
 import logoVertical from '../assets/logo-vertical.svg'
+import logoUnacem from '../assets/logo-unacem.png'
 
 export default function Portada({ onStart }) {
   return (
     <div className="w-[1080px] h-[1920px] bg-[#0032A0] flex flex-col items-center absolute inset-0">
+      <img
+        src={logoUnacem}
+        alt="UNACEM"
+        className="absolute h-auto object-contain"
+        style={{ right: 60, width: 140 }}
+      />
       {/* Spacer top */}
       <div className="h-[580px]" />
 

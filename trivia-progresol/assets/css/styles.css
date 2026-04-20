@@ -276,6 +276,15 @@ html, body {
   width: 280px;
 }
 
+.logo-unacem {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+}
+
 /* CTA Button */
 .btn-cta {
   display: flex;
