@@ -3,6 +3,8 @@ import Portada from './components/Portada'
 import Instrucciones from './components/Instrucciones'
 import Pregunta from './components/Pregunta'
 import Resultado from './components/Resultado'
+import Final from './components/Final'
+
 
 const TOTAL_QUESTIONS = 5
 const TIME_PER_QUESTION = 15
@@ -69,6 +71,21 @@ export default function App() {
     }
   }, [resetInactivity])
 
+  const resetGame = useCallback(() => {
+    setCurrentIndex(0)
+    setScore(0)
+    setScreen('portada')
+  }, [])
+
+  useEffect(() => {
+    if (screen === 'final') {
+      const t = setTimeout(resetGame, 5000)
+      return () => clearTimeout(t)
+    }
+  }, [screen, resetGame])
+
+
+
   const startGame = () => setScreen('instrucciones')
 
   const beginQuestions = () => {
@@ -103,11 +120,7 @@ export default function App() {
     }, FEEDBACK_DELAY)
   }
 
-  const resetGame = () => {
-    setCurrentIndex(0)
-    setScore(0)
-    setScreen('portada')
-  }
+
 
   return (
     <>
@@ -128,8 +141,11 @@ export default function App() {
           score={score}
           total={TOTAL_QUESTIONS}
           onReplay={resetGame}
+          onFinish={() => setScreen('final')}
         />
       )}
+      {screen === 'final' && <Final />}
+
     </>
   )
 }

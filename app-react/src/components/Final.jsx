@@ -1,0 +1,9 @@
+import logoUnacem from '../assets/logo-unacem.png'
+
+export default function Final() {
+  return (
+    <div className="w-[1080px] h-[1920px] bg-[#E74C3C] flex flex-col items-center justify-center absolute inset-0">
+      <img src={logoUnacem} alt="UNACEM" className="w-[600px] h-auto -mt-[100px]" />
+    </div>
+  )
+}

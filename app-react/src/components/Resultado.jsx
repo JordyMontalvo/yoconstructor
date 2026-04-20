@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import logoVertical from '../assets/logo-vertical.svg'
 
 const TIERS = [
   { min: 0, max: 1, label: 'APRENDIZ', emoji: '📖', badge: 'bg-[#001B5E]', icon: 'bg-[#001B5E]', scoreColor: 'text-white', message: 'Tienes mucho por descubrir sobre construcción. ¡Progresol te acompaña en el camino!' },
@@ -11,20 +10,22 @@ function getTier(score) {
   return TIERS.find(t => score >= t.min && score <= t.max)
 }
 
-export default function Resultado({ score, total, onReplay }) {
+export default function Resultado({ score, total, onReplay, onFinish }) {
   const tier = getTier(score)
 
   useEffect(() => {
-    const t = setTimeout(onReplay, 10000)
+    const t = setTimeout(() => {
+      if (onFinish) onFinish()
+      else onReplay()
+    }, 8000)
     return () => clearTimeout(t)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="w-[1080px] h-[1920px] bg-[#0032A0] flex flex-col items-center absolute inset-0">
-      {/* Logo zone */}
-      <div className="h-[480px] flex flex-col items-center justify-center pt-[60px]">
-        <img src={logoVertical} alt="Progresol" className="w-[280px]" />
-      </div>
+      {/* Spacer top */}
+      <div className="h-[280px]" />
+
 
       {/* Content zone */}
       <div className="flex-1 flex flex-col items-center justify-center px-20 gap-8">

@@ -8,7 +8,7 @@ export default function Portada({ onStart }) {
         src={logoUnacem}
         alt="UNACEM"
         className="absolute h-auto object-contain"
-        style={{ right: 60, width: 140 }}
+        style={{ top: 0, right: 60, width: 140 }}
       />
       {/* Spacer top */}
       <div className="h-[580px]" />
