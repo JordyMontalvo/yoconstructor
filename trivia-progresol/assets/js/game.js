@@ -47,6 +47,7 @@ const game = {
   timeLeft: 0,
   inactivityTimer: null,
   resultTimer: null,
+  finalTimer: null,
   educativoTimer: null,
   answered: false,
 
@@ -278,14 +279,16 @@ const game = {
 
     this.showScreen('screen-resultado');
     clearTimeout(this.resultTimer);
+    clearTimeout(this.finalTimer);
     this.resultTimer = setTimeout(() => {
       this.showScreen('screen-final');
-      this.resultTimer = setTimeout(() => this.reset(), 5000);
-    }, 8000);
+      this.finalTimer = setTimeout(() => this.reset(), 5000);
+    }, 5000);
   },
 
   reset() {
     clearTimeout(this.resultTimer);
+    clearTimeout(this.finalTimer);
     clearTimeout(this.educativoTimer);
     this.currentIndex = 0;
     this.score = 0;
