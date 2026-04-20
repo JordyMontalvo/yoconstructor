@@ -2,6 +2,7 @@
   "name": "yoconstructor-root",
   "private": true,
   "scripts": {
-    "build": "node -e \"console.log('Deploy: carpeta trivia-progresol (estático, sin paso de build).')\""
+    "build": "node -e \"console.log('[build] OK — Vercel sirve la carpeta trivia-progresol (ver vercel.json).')\"",
+    "zip": "rm -f trivia-progresol.zip && zip -r trivia-progresol.zip trivia-progresol -x '*.DS_Store' -x '*/.DS_Store'"
   }
 }

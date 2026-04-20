@@ -13,7 +13,6 @@ const TIERS = {
   maestro: { min: 3, max: 5, label: 'MAESTRO CONSTRUCTOR', emoji: '🏆', badgeClass: 'badge--maestro', message: '¡Eres un experto! Construir es tu pasión y Progresol tu mejor herramienta.' },
 };
 
-// Pool aleatorio: garantiza que todas las preguntas aparezcan antes de repetirse
 function _shuffleIndices(count) {
   const arr = Array.from({ length: count }, (_, i) => i);
   for (let i = arr.length - 1; i > 0; i--) {
@@ -23,15 +22,50 @@ function _shuffleIndices(count) {
   return arr;
 }
 
+const TRIVIA_POOL_STORAGE_VERSION = '2';
+
+(function _migrateTriviaPoolStorage() {
+  try {
+    const v = localStorage.getItem('trivia_pool_version');
+    if (v !== TRIVIA_POOL_STORAGE_VERSION) {
+      localStorage.removeItem('trivia_pool');
+      localStorage.removeItem('trivia_asked_cycle');
+      localStorage.setItem('trivia_pool_version', TRIVIA_POOL_STORAGE_VERSION);
+    }
+  } catch (e) {
+    /* ignore */
+  }
+})();
+
+function _persistTriviaPoolState() {
+  try {
+    localStorage.setItem('trivia_pool', JSON.stringify(_pool));
+    localStorage.setItem('trivia_asked_cycle', JSON.stringify([..._askedThisCycle]));
+  } catch (e) {
+    /* ignore */
+  }
+}
+
 let _pool = (() => {
   try {
     const saved = localStorage.getItem('trivia_pool');
     if (saved) {
       const p = JSON.parse(saved);
-      if (Array.isArray(p) && p.length > 0) return p;
+      if (Array.isArray(p)) return p;
     }
   } catch (e) {}
   return [];
+})();
+
+let _askedThisCycle = (() => {
+  try {
+    const saved = localStorage.getItem('trivia_asked_cycle');
+    if (saved) {
+      const a = JSON.parse(saved);
+      if (Array.isArray(a)) return new Set(a);
+    }
+  } catch (e) {}
+  return new Set();
 })();
 
 const game = {
@@ -104,33 +138,63 @@ const game = {
   showQuestion() {
     if (this.currentIndex === 0) {
       const bank = this.questions;
-      if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
-      const selected = [];
-      const usedInRound = new Set();
-      while (selected.length < TOTAL_QUESTIONS) {
-        if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
-        let idx = _pool.shift();
-        let guard = 0;
-        const maxGuard = Math.max(bank.length * 3, TOTAL_QUESTIONS * 4);
-        while (usedInRound.has(idx) && guard < maxGuard) {
-          if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
-          idx = _pool.shift();
-          guard++;
+      const N = bank.length;
+      if (N < TOTAL_QUESTIONS) {
+        this.currentQuestions = bank.slice(0, TOTAL_QUESTIONS);
+        this.score = 0;
+      } else {
+        if (_pool.length === 0) {
+          if (_askedThisCycle.size >= N) {
+            _askedThisCycle.clear();
+          }
+          _pool = _shuffleIndices(N);
         }
-        if (usedInRound.has(idx)) {
-          for (let i = 0; i < bank.length; i++) {
-            if (!usedInRound.has(i)) {
-              idx = i;
-              break;
+
+        const indices = [];
+
+        if (_pool.length >= TOTAL_QUESTIONS) {
+          for (let k = 0; k < TOTAL_QUESTIONS; k++) {
+            const idx = _pool.shift();
+            indices.push(idx);
+            _askedThisCycle.add(idx);
+          }
+        } else {
+          const askedSnapshot = new Set(_askedThisCycle);
+          while (_pool.length) {
+            indices.push(_pool.shift());
+          }
+          let need = TOTAL_QUESTIONS - indices.length;
+          const taken = new Set(indices);
+          const repeatSource = game.shuffle([...askedSnapshot]);
+          for (let r = 0; r < repeatSource.length && need > 0; r++) {
+            const idx = repeatSource[r];
+            if (!taken.has(idx)) {
+              indices.push(idx);
+              taken.add(idx);
+              need--;
             }
           }
+          while (need > 0) {
+            const fallback = [...askedSnapshot].find((ix) => !taken.has(ix));
+            if (fallback === undefined) break;
+            indices.push(fallback);
+            taken.add(fallback);
+            need--;
+          }
+          for (const ix of indices) {
+            _askedThisCycle.add(ix);
+          }
         }
-        usedInRound.add(idx);
-        selected.push(bank[idx]);
+
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+
+        this.currentQuestions = indices.map((ix) => bank[ix]);
+        _persistTriviaPoolState();
+        this.score = 0;
       }
-      try { localStorage.setItem('trivia_pool', JSON.stringify(_pool)); } catch (e) {}
-      this.currentQuestions = selected;
-      this.score = 0;
     }
     this.answered = false;
     this.renderProgress();
