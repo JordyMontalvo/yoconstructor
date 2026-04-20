@@ -48,20 +48,46 @@ const game = {
   resultTimer: null,
   finalTimer: null,
   educativoTimer: null,
+  nextQuestionTimer: null,
+  confettiRaf: null,
   answered: false,
+  _inactivityListenersAttached: false,
 
   async init() {
-    let data;
-    if (typeof window.TRIVIA_DATA !== 'undefined' && window.TRIVIA_DATA && window.TRIVIA_DATA.preguntas) {
-      data = window.TRIVIA_DATA;
-    } else {
-      const res = await fetch('data/data.json');
-      data = await res.json();
+    try {
+      let data;
+      if (typeof window.TRIVIA_DATA !== 'undefined' && window.TRIVIA_DATA && window.TRIVIA_DATA.preguntas) {
+        data = window.TRIVIA_DATA;
+      } else {
+        const res = await fetch('data/data.json');
+        if (!res.ok) throw new Error('fetch');
+        data = await res.json();
+      }
+      if (!data || !Array.isArray(data.preguntas) || data.preguntas.length === 0) {
+        throw new Error('data');
+      }
+      this.questions = data.preguntas;
+    } catch (e) {
+      this.questions = [];
+      const errEl = document.getElementById('init-error');
+      if (errEl) {
+        errEl.textContent = 'No se pudo cargar la trivia. Reinicia el tótem o avisa a soporte.';
+        errEl.hidden = false;
+      }
+      const startBtn = document.querySelector('#screen-portada .btn-cta');
+      if (startBtn) startBtn.disabled = true;
+      return;
     }
-    this.questions = data.preguntas;
+    this._attachInactivityListeners();
     this.resetInactivity();
-    document.addEventListener('touchstart', () => this.resetInactivity(), { passive: true });
-    document.addEventListener('click', () => this.resetInactivity());
+  },
+
+  _attachInactivityListeners() {
+    if (this._inactivityListenersAttached) return;
+    this._inactivityListenersAttached = true;
+    this._onUserInteraction = () => this.resetInactivity();
+    document.addEventListener('touchstart', this._onUserInteraction, { passive: true });
+    document.addEventListener('click', this._onUserInteraction);
   },
 
   shuffle(arr) {
@@ -87,9 +113,27 @@ const game = {
       const bank = this.questions;
       if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
       const selected = [];
+      const usedInRound = new Set();
       while (selected.length < TOTAL_QUESTIONS) {
         if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
-        selected.push(bank[_pool.shift()]);
+        let idx = _pool.shift();
+        let guard = 0;
+        const maxGuard = Math.max(bank.length * 3, TOTAL_QUESTIONS * 4);
+        while (usedInRound.has(idx) && guard < maxGuard) {
+          if (_pool.length === 0) _pool = _shuffleIndices(bank.length);
+          idx = _pool.shift();
+          guard++;
+        }
+        if (usedInRound.has(idx)) {
+          for (let i = 0; i < bank.length; i++) {
+            if (!usedInRound.has(i)) {
+              idx = i;
+              break;
+            }
+          }
+        }
+        usedInRound.add(idx);
+        selected.push(bank[idx]);
       }
       try { localStorage.setItem('trivia_pool', JSON.stringify(_pool)); } catch (e) {}
       this.currentQuestions = selected;
@@ -150,17 +194,19 @@ const game = {
 
     clearInterval(this.timer);
     this.timer = setInterval(() => {
+      if (this.timeLeft <= 1) {
+        clearInterval(this.timer);
+        fillEl.style.width = '0%';
+        fillEl.classList.add('warning');
+        this.answer(-1);
+        return;
+      }
       this.timeLeft--;
       textEl.textContent = this.timeLeft;
       fillEl.style.width = `${(this.timeLeft / TIME_PER_QUESTION) * 100}%`;
 
       if (this.timeLeft <= 5) {
         fillEl.classList.add('warning');
-      }
-
-      if (this.timeLeft <= 0) {
-        clearInterval(this.timer);
-        this.answer(-1);
       }
     }, 1000);
   },
@@ -199,7 +245,9 @@ const game = {
     this.showFeedback(isCorrect);
 
     const delay = isCorrect ? FEEDBACK_DELAY : FEEDBACK_DELAY_INCORRECT;
-    setTimeout(() => {
+    clearTimeout(this.nextQuestionTimer);
+    this.nextQuestionTimer = setTimeout(() => {
+      this.nextQuestionTimer = null;
       this.currentIndex++;
       if (this.currentIndex >= TOTAL_QUESTIONS) {
         this.showResult();
@@ -289,6 +337,18 @@ const game = {
     clearTimeout(this.resultTimer);
     clearTimeout(this.finalTimer);
     clearTimeout(this.educativoTimer);
+    clearTimeout(this.nextQuestionTimer);
+    this.nextQuestionTimer = null;
+    if (this.confettiRaf != null) {
+      cancelAnimationFrame(this.confettiRaf);
+      this.confettiRaf = null;
+    }
+    const cc = document.getElementById('confetti-canvas');
+    if (cc) {
+      cc.style.display = 'none';
+      const ctx = cc.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, cc.width || 1080, cc.height || 1920);
+    }
     this.currentIndex = 0;
     this.score = 0;
     this.answered = false;
@@ -297,6 +357,10 @@ const game = {
   },
 
   triggerConfetti() {
+    if (this.confettiRaf != null) {
+      cancelAnimationFrame(this.confettiRaf);
+      this.confettiRaf = null;
+    }
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
     const W = 1080, H = 1920;
@@ -318,11 +382,12 @@ const game = {
     }));
 
     const end = performance.now() + 2200;
-    let raf;
+    const self = this;
     const draw = (now) => {
       if (now > end) {
         ctx.clearRect(0, 0, W, H);
         canvas.style.display = 'none';
+        self.confettiRaf = null;
         return;
       }
       ctx.clearRect(0, 0, W, H);
@@ -338,9 +403,9 @@ const game = {
         ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
         ctx.restore();
       });
-      raf = requestAnimationFrame(draw);
+      self.confettiRaf = requestAnimationFrame(draw);
     };
-    raf = requestAnimationFrame(draw);
+    this.confettiRaf = requestAnimationFrame(draw);
   },
 
   resetInactivity() {
