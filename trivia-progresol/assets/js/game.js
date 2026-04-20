@@ -280,7 +280,7 @@ const game = {
     clearTimeout(this.resultTimer);
     this.resultTimer = setTimeout(() => {
       this.showScreen('screen-final');
-      this.resultTimer = setTimeout(() => this.reset(), 4000);
+      this.resultTimer = setTimeout(() => this.reset(), 5000);
     }, 8000);
   },
 

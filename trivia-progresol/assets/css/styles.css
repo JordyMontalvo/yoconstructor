@@ -279,7 +279,7 @@ html, body {
 .logo-unacem {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 60px;
   width: 140px;
   height: auto;
   object-fit: contain;
