@@ -24,6 +24,8 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
   const onAnswerRef = useRef(onAnswer)
 
   const correctIndex = question.respuesta_correcta
+  const correctText = question?.opciones?.[correctIndex]
+  const correctExtra = question?.feedback_correcto_extra?.trim?.()
 
   useEffect(() => {
     onAnswerRef.current = onAnswer
@@ -100,8 +102,18 @@ export default function Pregunta({ question, index, total, timePerQuestion, onAn
             }`}>
               {isCorrect ? '¡Correcto!' : 'Incorrecto'}
             </span>
+            {!isCorrect && question.feedback_incorrecto && (
+              <span
+                className="font-sg-b15 text-[28px] text-white/80 text-center max-w-[980px]"
+                style={{ whiteSpace: 'pre-wrap' }}
+              >
+                {question.feedback_incorrecto}
+              </span>
+            )}
             {!isCorrect && (
-              <span className="font-sg-b15 text-[28px] text-white/70">La respuesta correcta es:</span>
+              <span className="font-sg-b15 text-[28px] text-white/70 text-center">
+                👉 La respuesta correcta es: {correctText ?? '—'}{correctExtra ? `. ${correctExtra}` : ''}
+              </span>
             )}
           </div>
         )}

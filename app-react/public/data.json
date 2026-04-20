@@ -215,6 +215,8 @@
         "🌧️ Clima"
       ],
       "respuesta_correcta": 1,
+      "feedback_incorrecto": "No es cuestión de suerte 👀",
+      "feedback_correcto_extra": "En obra, confiarse es el mayor riesgo.",
       "categoria": "seguridad"
     },
     {
@@ -227,6 +229,8 @@
         "Nadie"
       ],
       "respuesta_correcta": 1,
+      "feedback_incorrecto": "Esto es clave tenerlo claro 🚧",
+      "feedback_correcto_extra": "La seguridad es tarea de equipo.",
       "categoria": "seguridad"
     },
     {
@@ -239,6 +243,7 @@
         "50 kg"
       ],
       "respuesta_correcta": 2,
+      "feedback_incorrecto": "Siempre te damos el peso correcto y adecuado para tu obra.",
       "categoria": "tecnico"
     },
     {
